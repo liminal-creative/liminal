@@ -1,0 +1,92 @@
+/* styles/AdminCompanies.css */
+
+.admin-companies {
+  padding: 20px;
+}
+
+.admin-companies h1 {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+.admin-companies ul {
+  list-style: none;
+  padding: 0;
+}
+
+.admin-companies li {
+  margin-bottom: 10px;
+}
+
+.admin-companies h2 {
+  font-size: 1.5em;
+  margin: 10px 0;
+}
+
+.admin-companies p {
+  font-size: 1em;
+  color: #666;
+}
+
+.admin-companies {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.admin-companies h1 {
+  margin-bottom: 20px;
+}
+
+.admin-companies input[type="text"] {
+  width: 50%;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.admin-companies ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.admin-companies li {
+  background: #f9f9f9;
+  margin: 10px 0;
+  padding: 20px;
+  border-radius: 4px;
+  width: 90%;
+  /* Adjusted width to 90% */
+  max-width: 800px;
+  /* Added max-width for better control */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.admin-companies li h2 {
+  margin: 0 0 10px 0;
+}
+
+.admin-companies li ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.admin-companies li ul li {
+  background: #fff;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.company-link {
+  text-decoration: none;
+  color: black;
+}
+
+.company-link:hover {
+  color: gray;
+  /* Optional: change the color on hover */
+}

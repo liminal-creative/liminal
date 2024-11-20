@@ -1,0 +1,62 @@
+.survey-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    /* background-color: #f9f9f9; */
+    border-radius: 8px;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+}
+
+.survey-page h1 {
+    margin-bottom: 50px;
+}
+
+.question {
+    margin-bottom: 20px;
+}
+
+.question label {
+    display: inline-block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.question input[type="text"],
+.question textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    background-color: #FCFCFC ;
+    border: 1px solid #e6e6e6;
+    border-radius: 5px;
+}
+
+.question textarea {
+    height: 100px;
+}
+
+.checkbox-option {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+button[type="submit"] {
+    display: block;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px; /* Adjust as needed */
+}
+
+.checkmark {
+    font-size: 100px;
+    color: green;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.navigation-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 150px; /* Space between buttons */
+}

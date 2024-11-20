@@ -1,0 +1,26 @@
+.hero {
+    background-color: #980F66 ;
+    padding: 140px;
+    color: white;
+}
+h1 {
+    text-align: center;
+}
+p {
+    font-weight: 500;
+}
+
+.disabled_btn{
+    background-color: gray;
+    /* position: absolute;
+    bottom:40px; */
+}
+.survey-card{
+    position: relative;
+    min-height: 360px;
+}
+.list-btn {
+    position: absolute;
+    bottom:40px;
+    
+}

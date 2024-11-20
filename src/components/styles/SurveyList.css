@@ -1,0 +1,39 @@
+.survey-list {
+}
+.survey-part {
+  padding: 100px 30px 50px;
+}
+.survey-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.survey-card {
+  background-color: rgba(211, 211, 211, 0.417);
+  padding: 40px;
+  margin: 15px;
+  width: calc(50% - 40px);
+  box-sizing: border-box;
+}
+
+.survey-card h2 {
+  margin-bottom: 10px;
+}
+
+.survey-card p {
+  margin-bottom: 20px;
+}
+
+.survey-card button {
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.yellow-line {
+  border: none;
+  border-top: 5px solid #f2d852; 
+  width: 70px;
+  margin-bottom: 100px
+}
