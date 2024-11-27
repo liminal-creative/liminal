@@ -20,8 +20,12 @@ const Header = () => {
                 {auth ? (
                     <>
                         <Link to="/surveys" style={styles.navLink}>Surveys</Link>
-                        {auth.user.isAdmin && (
+                        {(auth.user.isAdmin && auth.company === "liminal") && (
                             <Link to="/admin/companies" style={styles.navLink}>Companies</Link>
+                        )}
+                        {(auth.user.isAdmin) && (
+                            <Link to={`/companies/${auth.user.organizationId._id}`} style={styles.navLink}>Progress</Link>
+                            
                         )}
                         <Link to="/invite" style={styles.navLink}> Invite someone </Link>
                         <div style={styles.userMenu}>

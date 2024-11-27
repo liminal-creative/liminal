@@ -57,10 +57,10 @@ const SurveyList = () => {
                             <h2>{survey.title}</h2>
                             <p>{survey.description}</p>
                             {user.completedSurveyIndex + 1 === survey.order ? (
-                                <button class="list-btn"onClick={() => handleComplete(survey._id)}>Complete Questionnaire</button>
+                                <button className="list-btn"onClick={() => handleComplete(survey._id)}>Complete Questionnaire</button>
                             ) : null}
                             {user.completedSurveyIndex + 1 > survey.order ? (
-                                <button disabled class="disabled_btn list-btn">Questionnaire Completed</button>
+                                <button disabled className="disabled_btn list-btn">Questionnaire Completed</button>
                             ) : null}
                             {/* {user.completedSurveyIndex + 1 < survey.order ? (
                                 <button disabled class="disabled_btn">Please Complete Previous Survey</button>
