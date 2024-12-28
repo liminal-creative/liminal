@@ -21,7 +21,10 @@ const Header = () => {
                     <>
                         <Link to="/surveys" style={styles.navLink}>Surveys</Link>
                         {(auth.user.isAdmin && auth.company === "liminal") && (
+                            <>
                             <Link to="/admin/companies" style={styles.navLink}>Companies</Link>
+                            <Link to="/add-company" style={styles.navLink}>Add Company</Link>
+                            </>
                         )}
                         {(auth.user.isAdmin) && (
                             <Link to={`/companies/${auth.user.organizationId._id}`} style={styles.navLink}>Progress</Link>

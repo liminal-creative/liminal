@@ -13,6 +13,7 @@ import Header from './components/Header.js';
 import Invite from './screens/Invite.js';
 import Companies from './screens/admin/Companies.js';
 import CompanyDetails from './screens/CompanyDetails.js';
+import AddCompany from './screens/admin/AddCompany.js';
 
 function App() {
   const [message, setMessage] = useState('');
@@ -33,6 +34,7 @@ function App() {
           <Route path="/survey/:id" element={<Survey />} />
           <Route path="/admin/companies" element={<Companies />} />
           <Route path="/companies/:companyId" element={<CompanyDetails />} />
+          <Route path="/add-company" element={<AddCompany />} />
         </Routes>
       </div>
     </Router>
