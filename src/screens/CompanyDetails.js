@@ -87,13 +87,11 @@ const CompanyDetails = () => {
           </li>
         ))}
       </ul>
-      
-      {/* Compile answers button */}
+
       <button onClick={compileAnswers} disabled={loadingAnswers}>
         {loadingAnswers ? 'Compiling...' : 'Compile Answers'}
       </button>
 
-      {/* Show compiled answers */}
       {compiledAnswers && (
         <div>
           <h3>Compiled Survey Answers:</h3>

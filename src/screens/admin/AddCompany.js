@@ -1,10 +1,25 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import AuthContext from "../../context/AuthContext.js"; 
 
 const AddCompany = () => {
   const [companyName, setCompanyName] = useState("");
+  const { auth } = useContext(AuthContext);
   const [employees, setEmployees] = useState([{ name: "", email: "" }]);
+  const [selectedLeader, setSelectedLeader] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!auth?.user?.isAdmin) {
+      navigate("/");
+    }
+  }, [auth, navigate]); 
+
+  if (!auth?.user) {
+    return <div>Loading...</div>;
+  }
 
   const handleEmployeeChange = (index, field, value) => {
     const updatedEmployees = [...employees];
@@ -24,22 +39,18 @@ const AddCompany = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (selectedLeader === null) {
+      alert("Please select a team leader.");
+      return;
+    }
+
     try {
       const response = await axios.post("/api/add-company", {
         name: companyName,
         employees,
+        teamLeader: employees[selectedLeader],
       });
-
-      // const inviteResponses = await Promise.all(
-      //   employees.map((employee) =>
-      //     axios.post("/api/send-email", {
-      //       to: employee.email,
-      //       subject: "Welcome to the Liminal Core Messaging App",
-      //       text: `Hi ${employee.name}, you’ve been invited to join Liminal! Use this invite code to complete your signup: ${response.data.inviteCode}`,
-      //     })
-      //   )
-      // );
-
+      
       alert("Company and invites created successfully!");
     } catch (error) {
       console.error("Error creating company or sending invites", error);
@@ -77,6 +88,15 @@ const AddCompany = () => {
             }
             required
           />
+          <label style={{ marginLeft: "10px" }}>
+            <input
+              type="radio"
+              name="teamLeader"
+              checked={selectedLeader === index}
+              onChange={() => setSelectedLeader(index)}
+            />
+            Team Leader
+          </label>
           {employees.length > 1 && (
             <button type="button" onClick={() => removeEmployee(index)}>
               -

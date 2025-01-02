@@ -64,10 +64,6 @@ const SurveyPage = () => {
             });
             setSubmissionSuccess(true);
 
-            // Prepare email content
-            // const emailContent = surveyData.answers.map(qa => `
-            // <p><strong>Question:</strong> ${qa.question}</p>
-            // <p>Answer:${qa.answer}</p>`).join('');
             const emailContent = `
                 <div style="padding: 0px">
                     <p style="background-color: #e0f7ff; padding: 5px; margin: 0px" ><strong>Name</strong> </p>

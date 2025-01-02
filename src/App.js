@@ -14,6 +14,7 @@ import Invite from './screens/Invite.js';
 import Companies from './screens/admin/Companies.js';
 import CompanyDetails from './screens/CompanyDetails.js';
 import AddCompany from './screens/admin/AddCompany.js';
+import ProtectedRoute from './screens/auth/ProtectedRoute.js';
 
 function App() {
   const [message, setMessage] = useState('');
@@ -32,9 +33,9 @@ function App() {
           <Route path="/surveys" element={<Surveys />} />
           <Route path="/invite" element={<Invite />} />
           <Route path="/survey/:id" element={<Survey />} />
-          <Route path="/admin/companies" element={<Companies />} />
-          <Route path="/companies/:companyId" element={<CompanyDetails />} />
-          <Route path="/add-company" element={<AddCompany />} />
+          <Route path="/admin/companies" element={<ProtectedRoute component={Companies} requiredRole="admin"/>} />
+          <Route path="/companies/:companyId" element={<ProtectedRoute component={CompanyDetails} requiredRole="teamLeader"/>} />
+          <Route path="/add-company" element={<ProtectedRoute component={AddCompany} requiredRole="admin"/>} />
         </Routes>
       </div>
     </Router>
