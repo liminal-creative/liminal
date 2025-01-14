@@ -29,11 +29,19 @@ const SurveyPage = () => {
     }, [id]);
     
     const handleChange = (questionId, value, questionType) => {
+        // Update answers
         setAnswers(prevAnswers => ({
             ...prevAnswers,
             [questionId]: { type: questionType, answer: value }
         }));
+
+        // Dynamically update the slider background and value position
+        const slider = document.querySelector(`input[type="range"][data-id="${questionId}"]`);
+        if (slider) {
+            slider.style.setProperty("--value", value);
+        }
     };
+
 
     const handleSubmit = async (e) => {
 
@@ -82,7 +90,6 @@ const SurveyPage = () => {
                 </div>
             `;
 
-
             // Send survey content via email
             const emailResponse = await axios.post('/api/send-email', {
                 to: 'stephanie@meetliminal.com',
@@ -129,52 +136,85 @@ const SurveyPage = () => {
             <form onSubmit={handleSubmit}>
                 {survey.questions.map((question, index) => (
                     <div key={index} className="question">
-                        <label>{question.question}</label>
-                        {question.type === 'short answer' && (
-                            <input
-                                type="text"
-                                value={answers[question._id]?.answer || ''}
-                                onChange={(e) => handleChange(question._id, e.target.value, question.type)}
-                            />
-                        )}
-                        {question.type === 'long answer' && (
-                            <textarea
-                                value={answers[question._id]?.answer || ''}
-                                onChange={(e) => handleChange(question._id, e.target.value, question.type)}
-                            />
-                        )}
-                        {question.type === 'multiple choice' && question.options.map((option, idx) => (
-                            <div key={idx}>
-                                <input
-                                    type="radio"
-                                    name={question._id}
-                                    value={option}
-                                    checked={answers[question._id]?.answer === option}
-                                    onChange={(e) => handleChange(question._id, e.target.value, question.type)}
-                                />
-                                <label>{option}</label>
+                        {question.type === 'label' ? (
+                            <div className="label-text">
+                                <p>{question.question}</p>
                             </div>
-                        ))}
-                        {question.type === 'radio' && question.options.map((option, idx) => (
-                            <div key={idx}>
-                                <input
-                                    type="checkbox"
-                                    value={option}
-                                    checked={answers[question._id]?.answer?.includes(option) || false}
-                                    onChange={(e) => {
-                                        const currentAnswers = answers[question._id]?.answer || [];
-                                        if (currentAnswers.includes(option)) {
-                                            handleChange(question._id, currentAnswers.filter(a => a !== option), question.type);
-                                        } else {
-                                            handleChange(question._id, [...currentAnswers, option], question.type);
-                                        }
-                                    }}
-                                />
-                                <label>{option}</label>
-                            </div>
-                        ))}
+                        ) : (
+                            <>
+                                <label>{question.question}</label>
+                                {question.subText && <p>{question.subText}</p>}
+                                {question.type === 'short answer' && (
+                                    <input
+                                        type="text"
+                                        value={answers[question._id]?.answer || ''}
+                                        onChange={(e) => handleChange(question._id, e.target.value, question.type)}
+                                    />
+                                )}
+                                {question.type === 'long answer' && (
+                                    <textarea
+                                        value={answers[question._id]?.answer || ''}
+                                        onChange={(e) => handleChange(question._id, e.target.value, question.type)}
+                                    />
+                                )}
+                                {question.type === 'multiple choice' && question.options.map((option, idx) => (
+                                    <div key={idx}>
+                                        <input
+                                            type="radio"
+                                            name={question._id}
+                                            value={option}
+                                            checked={answers[question._id]?.answer === option}
+                                            onChange={(e) => handleChange(question._id, e.target.value, question.type)}
+                                        />
+                                        <label>{option}</label>
+                                    </div>
+                                ))}
+                                {question.type === 'radio' && question.options.map((option, idx) => (
+                                    <div key={idx}>
+                                        <input
+                                            type="checkbox"
+                                            value={option}
+                                            checked={answers[question._id]?.answer?.includes(option) || false}
+                                            onChange={(e) => {
+                                                const currentAnswers = answers[question._id]?.answer || [];
+                                                if (currentAnswers.includes(option)) {
+                                                    handleChange(question._id, currentAnswers.filter(a => a !== option), question.type);
+                                                } else {
+                                                    handleChange(question._id, [...currentAnswers, option], question.type);
+                                                }
+                                            }}
+                                        />
+                                        <label>{option}</label>
+                                    </div>
+                                ))}
+                                {question.type === 'scale' && (
+                                    <div className="scale-question">
+                                         <div className="slider-container">
+                                            <span className="slider-value" style={{ left: `${((answers[question._id]?.answer || 5) - 1) * 11.11}%` , transform: 'translateX(-50%)'}}>
+                                                {answers[question._id]?.answer || 5}
+                                            </span>
+                                            <input
+                                                type="range"
+                                                min="1"
+                                                max="10"
+                                                value={answers[question._id]?.answer || 5}
+                                                onChange={(e) => handleChange(question._id, parseInt(e.target.value, 10), question.type)}
+                                                className="slider"
+                                                style={{
+                                                    '--slider-value': `${((answers[question._id]?.answer || 5) -1) * 11.11}%`,
+                                                    background: `linear-gradient(to right, #00bcd4 ${((answers[question._id]?.answer || 5) - 1) * 11.11}%, #e0e0e0 ${((answers[question._id]?.answer || 5) - 1) * 11.11}%)`
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+
+
+                            </>
+                        )}
                     </div>
                 ))}
+
                 <button type="submit">Submit</button>
             </form>
         </div>
