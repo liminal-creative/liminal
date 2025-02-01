@@ -160,3 +160,17 @@ button[type="submit"] {
     margin-top: 5px;
     font-size: 14px;
 } */
+.ranking-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.ranking-item {
+    padding: 10px;
+    background: #f7f7f7;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: grab;
+}

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './styles/SurveyPage.css';
 import AuthContext from '../context/AuthContext.js';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 const SurveyPage = () => {
     const { id } = useParams();
@@ -12,22 +13,46 @@ const SurveyPage = () => {
     const navigate = useNavigate();
     const { auth, updateUser } = useContext(AuthContext);
 
+    // useEffect(() => {
+    //     const fetchSurvey = async () => {
+    //         try {
+    //             const response = await axios.get(`/api/surveys/${id}`);
+    //             setSurvey(response.data);
+    //             // Reset submission success when a new survey is loaded
+    //             setSubmissionSuccess(false);
+    //             setAnswers({});
+    //         } catch (error) {
+    //             console.error('Error fetching survey:', error);
+    //         }
+    //     };
+
+    //     fetchSurvey();
+    // }, [id]);
     useEffect(() => {
         const fetchSurvey = async () => {
             try {
                 const response = await axios.get(`/api/surveys/${id}`);
                 setSurvey(response.data);
-                // Reset submission success when a new survey is loaded
+    
+                const initialAnswers = {};
+                response.data.questions.forEach(q => {
+                    initialAnswers[q._id] = {
+                        type: q.type,
+                        answer: q.type === 'ranking' ? [...q.options] : ''
+                    };
+                });
+    
+                setAnswers(initialAnswers);
                 setSubmissionSuccess(false);
-                setAnswers({});
             } catch (error) {
                 console.error('Error fetching survey:', error);
             }
         };
-
+    
         fetchSurvey();
     }, [id]);
     
+
     const handleChange = (questionId, value, questionType) => {
         // Update answers
         setAnswers(prevAnswers => ({
@@ -42,6 +67,44 @@ const SurveyPage = () => {
         }
     };
 
+    // const handleDragEnd = (result) => {
+    //     if (!result.destination) return;
+
+    //     // Extract the question ID from the droppableId
+    //     const questionId = result.source.droppableId.split('-')[1];
+
+    //     const currentOptions = answers[questionId]?.answer || survey.questions.find(q => q._id === questionId).options;
+
+    //     const reorderedOptions = Array.from(currentOptions);
+    //     const [movedOption] = reorderedOptions.splice(result.source.index, 1);
+    //     reorderedOptions.splice(result.destination.index, 0, movedOption);
+
+    //     setAnswers((prevAnswers) => ({
+    //         ...prevAnswers,
+    //         [questionId]: { type: 'ranking', answer: reorderedOptions },
+    //     }));
+    // };
+    const handleDragEnd = (result) => {
+        if (!result.destination) return;
+    
+        const questionId = result.source.droppableId.replace('droppable-', '');
+    
+        let currentOptions =
+            answers[questionId]?.answer ||
+            survey.questions.find(q => q._id === questionId)?.options ||
+            [];
+    
+        const reorderedOptions = [...currentOptions];
+        const [movedOption] = reorderedOptions.splice(result.source.index, 1);
+        reorderedOptions.splice(result.destination.index, 0, movedOption);
+    
+        setAnswers((prevAnswers) => ({
+            ...prevAnswers,
+            [questionId]: { type: 'ranking', answer: reorderedOptions },
+        }));
+
+        console.log(answers)
+    };
 
     const handleSubmit = async (e) => {
 
@@ -84,9 +147,9 @@ const SurveyPage = () => {
                     <p style="padding: 2px 2px 2px 15px;"> ${auth.company}</p>
                     
                     ${surveyData.answers.map(qa => `
-                    <p style="background-color: #e0f7ff; padding: 5px"><strong>Question:</strong> ${qa.question}</p>
-                    <p style="padding: 2px 2px 2px 15px;">Answer: ${qa.answer}</p>
-                    `).join('')}
+                        <p style="background-color: #e0f7ff; padding: 5px"><strong>Question:</strong> ${qa.question}</p>
+                        <p style="padding: 2px 2px 2px 15px;">Answer: ${Array.isArray(qa.answer) ? qa.answer.join(', ') : qa.answer}</p>
+                    `).join('')}                    
                 </div>
             `;
 
@@ -94,7 +157,7 @@ const SurveyPage = () => {
             const emailResponse = await axios.post('/api/send-email', {
                 to: 'stephanie@meetliminal.com',
                 subject: `Survey Submission: ${survey.title}`,
-                text: surveyData.answers.map(qa => `Question: ${qa.question}\nAnswer: ${qa.answer}`).join('\n\n'),
+                text: surveyData.answers.map(qa => `Question: ${qa.question}\nAnswer: ${Array.isArray(qa.answer) ? qa.answer.join(', ') : qa.answer}`).join('\n\n'),
                 html: emailContent
             });
 
@@ -189,8 +252,8 @@ const SurveyPage = () => {
                                 ))}
                                 {question.type === 'scale' && (
                                     <div className="scale-question">
-                                         <div className="slider-container">
-                                            <span className="slider-value" style={{ left: `${((answers[question._id]?.answer || 5) - 1) * 11.11}%` , transform: 'translateX(-50%)'}}>
+                                        <div className="slider-container">
+                                            <span className="slider-value" style={{ left: `${((answers[question._id]?.answer || 5) - 1) * 11.11}%`, transform: 'translateX(-50%)' }}>
                                                 {answers[question._id]?.answer || 5}
                                             </span>
                                             <input
@@ -201,14 +264,64 @@ const SurveyPage = () => {
                                                 onChange={(e) => handleChange(question._id, parseInt(e.target.value, 10), question.type)}
                                                 className="slider"
                                                 style={{
-                                                    '--slider-value': `${((answers[question._id]?.answer || 5) -1) * 11.11}%`,
+                                                    '--slider-value': `${((answers[question._id]?.answer || 5) - 1) * 11.11}%`,
                                                     background: `linear-gradient(to right, #00bcd4 ${((answers[question._id]?.answer || 5) - 1) * 11.11}%, #e0e0e0 ${((answers[question._id]?.answer || 5) - 1) * 11.11}%)`
                                                 }}
                                             />
                                         </div>
                                     </div>
                                 )}
+                                {question.type === 'ranking' && (
+                                    <DragDropContext onDragEnd={handleDragEnd}>
+                                        <Droppable droppableId={`droppable-${question._id}`}>
+                                            {(provided) => (
+                                                <div ref={provided.innerRef} {...provided.droppableProps} className="ranking-container">
+                                                    {(answers[question._id]?.answer || question.options).map((option, idx) => (
+                                                        <Draggable key={`${question._id}-${idx}`} draggableId={`${question._id}-${idx}`} index={idx}>
+                                                            {(provided) => (
+                                                                <div
+                                                                    ref={provided.innerRef}
+                                                                    {...provided.draggableProps}
+                                                                    {...provided.dragHandleProps}
+                                                                    className="ranking-item"
+                                                                >
+                                                                    {option}
+                                                                </div>
+                                                            )}
+                                                        </Draggable>
+                                                    ))}
+                                                    {provided.placeholder}
+                                                </div>
+                                            )}
+                                        </Droppable>
+                                    </DragDropContext>
+                                )}
 
+                                {/* {question.type === 'ranking' && (
+                                    <DragDropContext onDragEnd={handleDragEnd}>
+                                            <Droppable droppableId={`droppable-${question._id}`}>
+                                                {(provided) => (
+                                                    <div ref={provided.innerRef} {...provided.droppableProps} className="ranking-container">
+                                                        {(answers[question._id]?.answer || question.options).map((option, idx) => (
+                                                            <Draggable key={`${question._id}-${option}`} draggableId={`${question._id}-${option}`} index={idx}>
+                                                                {(provided) => (
+                                                                    <div
+                                                                        ref={provided.innerRef}
+                                                                        {...provided.draggableProps}
+                                                                        {...provided.dragHandleProps}
+                                                                        className="ranking-item"
+                                                                    >
+                                                                        {option}
+                                                                    </div>
+                                                                )}
+                                                            </Draggable>
+                                                        ))}
+                                                        {provided.placeholder}
+                                                    </div>
+                                                )}
+                                            </Droppable>
+                                    </DragDropContext>
+                                )} */}
 
                             </>
                         )}
