@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/liminal-creative/liminal/static/css/main.582990d9.css",
-    "main.js": "/liminal-creative/liminal/static/js/main.4fe767ec.js",
-    "static/js/453.f52bf5bd.chunk.js": "/liminal-creative/liminal/static/js/453.f52bf5bd.chunk.js",
-    "index.html": "/liminal-creative/liminal/index.html",
-    "main.582990d9.css.map": "/liminal-creative/liminal/static/css/main.582990d9.css.map",
-    "main.4fe767ec.js.map": "/liminal-creative/liminal/static/js/main.4fe767ec.js.map",
-    "453.f52bf5bd.chunk.js.map": "/liminal-creative/liminal/static/js/453.f52bf5bd.chunk.js.map"
+    "main.css": "/liminal-creative/static/css/main.582990d9.css",
+    "main.js": "/liminal-creative/static/js/main.47ec2122.js",
+    "static/js/453.f52bf5bd.chunk.js": "/liminal-creative/static/js/453.f52bf5bd.chunk.js",
+    "index.html": "/liminal-creative/index.html",
+    "main.582990d9.css.map": "/liminal-creative/static/css/main.582990d9.css.map",
+    "main.47ec2122.js.map": "/liminal-creative/static/js/main.47ec2122.js.map",
+    "453.f52bf5bd.chunk.js.map": "/liminal-creative/static/js/453.f52bf5bd.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.582990d9.css",
-    "static/js/main.4fe767ec.js"
+    "static/js/main.47ec2122.js"
   ]
 }
