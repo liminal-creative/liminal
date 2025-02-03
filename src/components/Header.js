@@ -14,26 +14,25 @@ const Header = () => {
 
     return (
         <header style={styles.header}>
-            {/* <img src={logo} alt="Logo" style={styles.logo} /> */}
             <nav style={styles.nav}>
                 <Link to="/" style={styles.navLink}>Home</Link>
-                {auth ? (
+                {auth?.user ? (
                     <>
                         <Link to="/surveys" style={styles.navLink}>Surveys</Link>
-                        {(auth.user.isAdmin && auth.company === "liminal") && (
+                        {(auth?.user?.isAdmin && auth?.company === "liminal" && auth.company === "liminal") && (
                             <>
                             <Link to="/admin/companies" style={styles.navLink}>Companies</Link>
                             <Link to="/add-company" style={styles.navLink}>Add Company</Link>
                             </>
                         )}
-                        {(auth.user.isAdmin) && (
+                        {(auth?.user?.isAdmin && auth?.company === "liminal") && (
                             <Link to={`/companies/${auth.user.organizationId._id}`} style={styles.navLink}>Progress</Link>
                             
                         )}
                         <Link to="/invite" style={styles.navLink}> Invite someone </Link>
                         <div style={styles.userMenu}>
                             <span onClick={() => setShowLogout(!showLogout)} style={styles.userName}>
-                                Logged in as {auth.user.name}
+                                Logged in as {auth?.user?.name}
                             </span>
                             {showLogout && (
                                 <button onClick={handleLogout} style={styles.logoutButton}>

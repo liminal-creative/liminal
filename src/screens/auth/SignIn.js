@@ -7,16 +7,17 @@ const Signin = () => {
 
   const [formData, setFormData] = useState({
     email: '',
-    password: ''
+    password: '',
+    staySignedIn: false
   });
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: type === 'checkbox' ? checked : value,
     });
   };
 

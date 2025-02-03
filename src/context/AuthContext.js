@@ -4,29 +4,39 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [auth, setAuth] = useState(() => {
-        const storedAuth = localStorage.getItem('auth');
-        return storedAuth ? JSON.parse(storedAuth) : { user: {} };
+        const storedAuth = localStorage.getItem('auth') || sessionStorage.getItem('auth');
+        return storedAuth ? JSON.parse(storedAuth) : { user: null, token: null };
     });
 
     useEffect(() => {
-        localStorage.setItem('auth', JSON.stringify(auth));
+        if (auth?.token) {
+            if (auth.staySignedIn) {
+                localStorage.setItem('auth', JSON.stringify(auth));
+            } else {
+                sessionStorage.setItem('auth', JSON.stringify(auth));
+            }
+            localStorage.removeItem('auth');
+            sessionStorage.removeItem('auth');
+        }
     }, [auth]);
+
+    const login = (data) => {
+        const { user, token, staySignedIn } = data;
+        const authData = { user, token, staySignedIn };
+        setAuth(authData);
+    };
+
+    const logout = () => {
+        setAuth({ user: null, token: null });
+        localStorage.removeItem('auth');
+        sessionStorage.removeItem('auth');
+    };
 
     const updateUser = (updatedUser) => {
         setAuth(prevAuth => ({
             ...prevAuth,
             user: updatedUser
         }));
-    };
-
-    const login = (userData) => {
-        setAuth(userData);
-        localStorage.setItem('auth', JSON.stringify(userData));
-    };
-
-    const logout = () => {
-        setAuth(null);
-        localStorage.removeItem('auth');
     };
 
     return (
