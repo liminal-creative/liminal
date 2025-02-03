@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import AuthContext from '../../context/AuthContext.js';
 import './Companies.css';
 import { Link } from 'react-router-dom';
+import axiosInstance from '../../axiosConfig.js';
 
 const Companies = () => {
   const [companies, setCompanies] = useState([]);
@@ -13,7 +14,7 @@ const Companies = () => {
     const fetchCompanies = async () => {
       try {
         if (auth?.user?.isAdmin) {
-          const response = await axios.get('/api/companies', {
+          const response = await axiosInstance.get('/api/companies', {
             headers: { Authorization: `Bearer ${auth.token}` }
           });
           setCompanies(response.data);

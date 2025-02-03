@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import AuthContext from '../context/AuthContext.js';
-import axios from 'axios'; // Make sure to import axios
+// import axios from 'axios';
+import axiosInstance from '../axiosConfig.js';
 import './styles/InvitePage.css'
 
 const Invite = () => {
@@ -26,7 +27,7 @@ const Invite = () => {
             const text = `You have been invited to use the Core Messaging Site by Liminal. To join your organization, sign up with this link: [ Link Here]. Where it asks for the organization ID, put in yours, which is: ${organizationId}.`;
             const html = `<p>You have been invited to use the Core Messaging Site by Liminal. To join your organization, sign up with this link: <a href="[ Link Here]">[ Link Here]</a>. Where it asks for the organization ID, put in yours, which is: <strong>${organizationId}</strong>.</p>`;
 
-            const response = await axios.post('/api/send-email', {
+            const response = await axiosInstance.post('/api/send-email', {
                 to: email,
                 subject,
                 text,

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import { useSearchParams } from 'react-router-dom';
+import axiosInstance from '../../axiosConfig.js';
 
 const ResetPassword = () => {
     const [password, setPassword] = useState('');
@@ -11,7 +12,7 @@ const ResetPassword = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/api/auth/reset-password', { token, password });
+            const response = await axiosInstance.post('/api/auth/reset-password', { token, password });
             setMessage(response.data);
         } catch (error) {
             setMessage(error.response.data);

@@ -1,8 +1,9 @@
 
 import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
+// import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../context/AuthContext.js"; 
+import axiosInstance from "../../axiosConfig.js";
 
 const AddCompany = () => {
   const [companyName, setCompanyName] = useState("");
@@ -45,7 +46,7 @@ const AddCompany = () => {
     }
 
     try {
-      const response = await axios.post("/api/add-company", {
+      const response = await axiosInstance.post("/api/add-company", {
         name: companyName,
         employees,
         teamLeader: employees[selectedLeader],

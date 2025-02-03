@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
+import axiosInstance from '../axiosConfig.js';
 import { useParams } from 'react-router-dom'; // To access company ID from the URL
 import './styles/CompanyDetails.css'
 
@@ -14,7 +15,7 @@ const CompanyDetails = () => {
   useEffect(() => {
     const fetchCompany = async () => {
       try {
-        const response = await axios.get(`/api/companies/${companyId}`);
+        const response = await axiosInstance.get(`/api/companies/${companyId}`);
         setCompany(response.data);
       } catch (error) {
         setError('Error fetching company details');
@@ -27,7 +28,7 @@ const CompanyDetails = () => {
   const compileAnswers = async () => {
     setLoadingAnswers(true);
     try {
-      const response = await axios.post(`/api/companies/${companyId}/compile-answers`);
+      const response = await axiosInstance.post(`/api/companies/${companyId}/compile-answers`);
       setCompiledAnswers(response.data.compiledAnswers);
       console.log("compiledAnswers", response.data.compiledAnswers);
     } catch (error) {
@@ -46,7 +47,7 @@ const CompanyDetails = () => {
       const text = `Hi ${user.name},\n\nYou are currently on survey ${completedSurveyIndex + 1} out of 10. Please complete your surveys soon.\n\nThank you!`;
       const html = `<p>Hi ${user.name},</p><p> This message is from the Liminal Core Messaging App. You are currently on survey <strong>${completedSurveyIndex + 1}</strong> out of 10. Please complete your surveys soon.</p><p>Thank you!</p>`;
 
-      await axios.post('/api/send-email', {
+      await axiosInstance.post('/api/send-email', {
         to: email,
         subject,
         text,
