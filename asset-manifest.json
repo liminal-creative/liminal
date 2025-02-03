@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/liminal-creative/liminal/static/css/main.582990d9.css",
+    "main.js": "/liminal-creative/liminal/static/js/main.4fe767ec.js",
+    "static/js/453.f52bf5bd.chunk.js": "/liminal-creative/liminal/static/js/453.f52bf5bd.chunk.js",
+    "index.html": "/liminal-creative/liminal/index.html",
+    "main.582990d9.css.map": "/liminal-creative/liminal/static/css/main.582990d9.css.map",
+    "main.4fe767ec.js.map": "/liminal-creative/liminal/static/js/main.4fe767ec.js.map",
+    "453.f52bf5bd.chunk.js.map": "/liminal-creative/liminal/static/js/453.f52bf5bd.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.582990d9.css",
+    "static/js/main.4fe767ec.js"
+  ]
+}
