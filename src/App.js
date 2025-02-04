@@ -1,6 +1,6 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { HashRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Home from './screens/Home.js';
 import Signup from './screens/auth/SignUp.js';
 import Signin from './screens/auth/SignIn.js';
