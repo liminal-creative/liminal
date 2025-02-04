@@ -45,8 +45,8 @@ const Signup = () => {
         ...formData,
       });
 
-      alert('Account created successfully!');
-      navigate('/');
+      alert('Account created successfully! Login to see your surveys');
+      navigate('/signin');
     } catch (err) {
       setError('Error creating account. Please try again.');
     }
