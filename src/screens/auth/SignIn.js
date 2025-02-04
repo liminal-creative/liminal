@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
+import axiosInstance from '../../axiosConfig.js';
 import { useNavigate, Link } from 'react-router-dom';
 import AuthContext from '../../context/AuthContext.js';
 
@@ -25,7 +26,7 @@ const Signin = () => {
     console.log('formData', formData)
     e.preventDefault();
     try {
-      const response = await axios.post('/api/auth/signin', formData);
+      const response = await axiosInstance.post('/api/auth/signin', formData);
       console.log(response.data);
       login(response.data);
       alert("Sign In Successful");

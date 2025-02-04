@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+// import axios from 'axios';
+import axiosInstance from '../axiosConfig.js';
 import './styles/SurveyPage.css';
 import AuthContext from '../context/AuthContext.js';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
@@ -16,7 +17,7 @@ const SurveyPage = () => {
     // useEffect(() => {
     //     const fetchSurvey = async () => {
     //         try {
-    //             const response = await axios.get(`/api/surveys/${id}`);
+    //             const response = await axiosInstance.get(`/api/surveys/${id}`);
     //             setSurvey(response.data);
     //             // Reset submission success when a new survey is loaded
     //             setSubmissionSuccess(false);
@@ -31,7 +32,7 @@ const SurveyPage = () => {
     useEffect(() => {
         const fetchSurvey = async () => {
             try {
-                const response = await axios.get(`/api/surveys/${id}`);
+                const response = await axiosInstance.get(`/api/surveys/${id}`);
                 setSurvey(response.data);
     
                 const initialAnswers = {};
@@ -120,7 +121,7 @@ const SurveyPage = () => {
 
         e.preventDefault();
         try {
-            const response = await axios.post('/api/surveys/submit-survey', {
+            const response = await axiosInstance.post('/api/surveys/submit-survey', {
                 userId: auth.user._id,
                 surveyId: id,
                 answers: Object.keys(answers).map(questionId => ({
@@ -154,7 +155,7 @@ const SurveyPage = () => {
             `;
 
             // Send survey content via email
-            const emailResponse = await axios.post('/api/send-email', {
+            const emailResponse = await axiosInstance.post('/api/send-email', {
                 to: 'stephanie@meetliminal.com',
                 subject: `Survey Submission: ${survey.title}`,
                 text: surveyData.answers.map(qa => `Question: ${qa.question}\nAnswer: ${Array.isArray(qa.answer) ? qa.answer.join(', ') : qa.answer}`).join('\n\n'),

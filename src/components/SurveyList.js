@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
+import axiosInstance from '../axiosConfig.js';
 import { useNavigate } from 'react-router-dom';
 import './styles/SurveyList.css';  // Import your CSS file for styling
 import AuthContext from '../context/AuthContext.js';
@@ -12,7 +13,7 @@ const SurveyList = () => {
     useEffect(() => {
         const fetchSurveys = async () => {
             try {
-                const response = await axios.get('/api/surveys');
+                const response = await axiosInstance.get('/api/surveys');
                 setSurveys(response.data);
                 console.log(response.data);
             } catch (error) {
