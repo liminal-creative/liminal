@@ -14,21 +14,6 @@ const SurveyPage = () => {
     const navigate = useNavigate();
     const { auth, updateUser } = useContext(AuthContext);
 
-    // useEffect(() => {
-    //     const fetchSurvey = async () => {
-    //         try {
-    //             const response = await axiosInstance.get(`/api/surveys/${id}`);
-    //             setSurvey(response.data);
-    //             // Reset submission success when a new survey is loaded
-    //             setSubmissionSuccess(false);
-    //             setAnswers({});
-    //         } catch (error) {
-    //             console.error('Error fetching survey:', error);
-    //         }
-    //     };
-
-    //     fetchSurvey();
-    // }, [id]);
     useEffect(() => {
         const fetchSurvey = async () => {
             try {
@@ -154,9 +139,8 @@ const SurveyPage = () => {
                 </div>
             `;
 
-            // Send survey content via email
             const emailResponse = await axiosInstance.post('/api/send-email', {
-                to: 'stephanie@meetliminal.com',
+                to: auth.user.email,
                 subject: `Survey Submission: ${survey.title}`,
                 text: surveyData.answers.map(qa => `Question: ${qa.question}\nAnswer: ${Array.isArray(qa.answer) ? qa.answer.join(', ') : qa.answer}`).join('\n\n'),
                 html: emailContent

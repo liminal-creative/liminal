@@ -9,7 +9,7 @@ const Header = () => {
     console.log(auth, 'auth <-', auth?.user?.isAdmin);
     const handleLogout = () => {
         logout();
-        navigate('/'); // Redirect to home page after logout
+        navigate('/'); 
     };
 
     return (
@@ -19,17 +19,16 @@ const Header = () => {
                 {auth?.user ? (
                     <>
                         <Link to="/surveys" style={styles.navLink}>Surveys</Link>
-                        {(auth?.user?.isAdmin && auth?.company === "liminal") && (
+                        {(auth?.user?.isAdmin && auth?.user.organizationId.name === "liminal") && (
                             <>
                             <Link to="/admin/companies" style={styles.navLink}>Companies</Link>
                             <Link to="/add-company" style={styles.navLink}>Add Company</Link>
                             </>
                         )}
-                        {(auth?.user?.isAdmin && auth?.company === "liminal") && (
+                        {(auth?.user?.isTeamLeader) && (
                             <Link to={`/companies/${auth.user.organizationId._id}`} style={styles.navLink}>Progress</Link>
-                            
                         )}
-                        <Link to="/invite" style={styles.navLink}> Invite someone </Link>
+                        {/* <Link to="/invite" style={styles.navLink}> Invite someone </Link> */}
                         <div style={styles.userMenu}>
                             <span onClick={() => setShowLogout(!showLogout)} style={styles.userName}>
                                 Logged in as {auth?.user?.name}
