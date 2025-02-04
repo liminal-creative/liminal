@@ -19,7 +19,7 @@ const Header = () => {
                 {auth?.user ? (
                     <>
                         <Link to="/surveys" style={styles.navLink}>Surveys</Link>
-                        {(auth?.user?.isAdmin && auth?.company === "liminal" && auth.company === "liminal") && (
+                        {(auth?.user?.isAdmin && auth?.company === "liminal") && (
                             <>
                             <Link to="/admin/companies" style={styles.navLink}>Companies</Link>
                             <Link to="/add-company" style={styles.navLink}>Add Company</Link>

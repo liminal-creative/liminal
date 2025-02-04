@@ -12,13 +12,14 @@ export const AuthProvider = ({ children }) => {
         if (auth?.token) {
             if (auth.staySignedIn) {
                 localStorage.setItem('auth', JSON.stringify(auth));
+                sessionStorage.removeItem('auth');  // Ensure session storage is not overwritten
             } else {
                 sessionStorage.setItem('auth', JSON.stringify(auth));
+                localStorage.removeItem('auth');  // Ensure local storage is not overwritten
             }
-            localStorage.removeItem('auth');
-            sessionStorage.removeItem('auth');
         }
     }, [auth]);
+    
 
     const login = (data) => {
         const { user, token, staySignedIn } = data;
