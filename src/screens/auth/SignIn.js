@@ -13,6 +13,7 @@ const Signin = () => {
   });
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -33,6 +34,11 @@ const Signin = () => {
       navigate("/surveys");
     } catch (error) {
       console.error('Error:', error);
+      if (error.response && error.response.status === 400) {
+        setError('Incorrect email or password. Please try again.'); // Set error if wrong credentials
+      } else {
+        setError('An error occurred. Please try again later.');
+      }
     }
   };
 
@@ -49,6 +55,7 @@ const Signin = () => {
           <input type="password" name="password" value={formData.password} onChange={handleChange} required />
         </div>
         <button type="submit">Sign In</button>
+        {error && <div style={{color: 'red', marginTop: '10px'}}>{error}</div>} {/* Display error message */}
         <Link to="/forgot-password" > <p> Forgot Password? </p> </Link>
         
       </form>
