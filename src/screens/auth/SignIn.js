@@ -1,11 +1,9 @@
 import React, { useState, useContext } from 'react';
-// import axios from 'axios';
 import axiosInstance from '../../axiosConfig.js';
 import { useNavigate, Link } from 'react-router-dom';
 import AuthContext from '../../context/AuthContext.js';
 
 const Signin = () => {
-
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -28,14 +26,18 @@ const Signin = () => {
     e.preventDefault();
     try {
       const response = await axiosInstance.post('/api/auth/signin', formData);
-      console.log(response.data);
-      login(response.data);
+      console.log("response.data", response.data);
+      login({
+        user: response.data.user,
+        token: response.data.token,
+        staySignedIn: formData.staySignedIn
+      });
       alert("Sign In Successful");
       navigate("/surveys");
     } catch (error) {
       console.error('Error:', error);
       if (error.response && error.response.status === 400) {
-        setError('Incorrect email or password. Please try again.'); // Set error if wrong credentials
+        setError('Incorrect email or password. Please try again.'); 
       } else {
         setError('An error occurred. Please try again later.');
       }
@@ -54,10 +56,18 @@ const Signin = () => {
           <label>Password:</label>
           <input type="password" name="password" value={formData.password} onChange={handleChange} required />
         </div>
+        <div>
+          <input 
+            type="checkbox" 
+            name="staySignedIn" 
+            checked={formData.staySignedIn} 
+            onChange={handleChange} 
+          />
+          <label> Stay Signed In </label>
+        </div>
         <button type="submit">Sign In</button>
-        {error && <div style={{color: 'red', marginTop: '10px'}}>{error}</div>} {/* Display error message */}
-        <Link to="/forgot-password" > <p> Forgot Password? </p> </Link>
-        
+        {error && <div style={{color: 'red', marginTop: '10px'}}>{error}</div>} 
+        <Link to="/forgot-password"><p>Forgot Password?</p></Link>
       </form>
     </div>
   );
