@@ -1,4 +1,5 @@
 import React from 'react';
+import FileUpload from '../components/FileUpload.js';
 
 const Home = () => {
   return (
