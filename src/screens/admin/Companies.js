@@ -43,7 +43,7 @@ const Companies = () => {
 
   return (
     <div className="admin-companies">
-      <h1>Companies</h1>
+      <h1>Organizations</h1>
       <input
         type="text"
         placeholder="Search by company or user name"
@@ -66,7 +66,7 @@ const Companies = () => {
           ))}
         </ul>
       ) : (
-        <p>No companies found</p>
+        <p>No organizations found</p>
       )}
       {/* {companies.length > 0 ? (
         <ul>

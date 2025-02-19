@@ -60,7 +60,7 @@ const AddCompany = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h1>Add a New Company</h1>
+      <h1>Add a New Organization</h1>
       <div>
         <label>Company Name:</label>
         <input

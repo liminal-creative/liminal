@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-// import axios from 'axios';
 import axiosInstance from '../axiosConfig.js';
-import { useParams } from 'react-router-dom'; // To access company ID from the URL
+import { useParams } from 'react-router-dom'; 
 import './styles/CompanyDetails.css'
 
 const CompanyDetails = () => {
@@ -72,7 +71,7 @@ const CompanyDetails = () => {
   return (
     <div className='page-container'>
       <h1>{company.name}</h1>
-      <h3>Users in this company:</h3>
+      <h3>Users in this organization:</h3>
       <ul>
         {company.users.map(user => (
           <li key={user._id}>

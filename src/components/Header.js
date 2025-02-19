@@ -21,8 +21,8 @@ const Header = () => {
                         <Link to="/surveys" style={styles.navLink}>Surveys</Link>
                         {(auth?.user?.isAdmin && auth?.user.organizationId.name === "liminal") && (
                             <>
-                            <Link to="/admin/companies" style={styles.navLink}>Companies</Link>
-                            <Link to="/add-company" style={styles.navLink}>Add Company</Link>
+                            <Link to="/admin/companies" style={styles.navLink}>Organizations</Link>
+                            <Link to="/add-company" style={styles.navLink}>Add Organization</Link>
                             </>
                         )}
                         {(auth?.user?.isTeamLeader) && (

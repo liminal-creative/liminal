@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
 import AuthContext from '../context/AuthContext.js';
-// import axios from 'axios';
 import axiosInstance from '../axiosConfig.js';
 import './styles/InvitePage.css'
 
