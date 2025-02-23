@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import AuthContext from "../../context/AuthContext.js"; 
 import axiosInstance from "../../axiosConfig.js";
 
-const AddCompany = () => {
+const AddOrganization = () => {
   const [companyName, setCompanyName] = useState("");
   const { auth } = useContext(AuthContext);
   const [employees, setEmployees] = useState([{ name: "", email: "" }]);
@@ -61,7 +61,7 @@ const AddCompany = () => {
     <form onSubmit={handleSubmit}>
       <h1>Add a New Organization</h1>
       <div>
-        <label>Company Name:</label>
+        <label>Organization Name:</label>
         <input
           type="text"
           value={companyName}
@@ -112,4 +112,4 @@ const AddCompany = () => {
   );
 };
 
-export default AddCompany;
+export default AddOrganization;

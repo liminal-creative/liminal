@@ -45,7 +45,7 @@ const Invite = () => {
     return (
         <div className="invite-container"> {/* Add the container class */}
             <h1>Invite Page</h1>
-            <p>To invite someone to your company, have them sign up and enter your Company ID: {organizationId}</p>
+            <p>To invite someone to your organization, have them sign up and enter your Organization ID: {organizationId}</p>
 
             <h3>Or send them instructions via email</h3>
             <input

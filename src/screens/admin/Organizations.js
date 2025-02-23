@@ -1,11 +1,10 @@
 import React, { useEffect, useState, useContext } from 'react';
-// import axios from 'axios';
 import AuthContext from '../../context/AuthContext.js';
-import './Companies.css';
+import './Organizations.css';
 import { Link } from 'react-router-dom';
 import axiosInstance from '../../axiosConfig.js';
 
-const Companies = () => {
+const Organizations = () => {
   const [companies, setCompanies] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const { auth } = useContext(AuthContext);
@@ -23,7 +22,7 @@ const Companies = () => {
         console.error('Error fetching companies:', error);
       }
     };
-
+    
     fetchCompanies();
 
   }, [auth]);
@@ -53,7 +52,7 @@ const Companies = () => {
       {filteredCompanies.length > 0 ? (
         <ul>
           {filteredCompanies.map(company => (
-            <Link className="company-link" to={`/companies/${company._id}`}>
+            <Link className="company-link" to={`/organizations/${company._id}`}>
               <li key={company._id}>
                 <h2>{company.name}</h2>
                 <ul>
@@ -68,24 +67,8 @@ const Companies = () => {
       ) : (
         <p>No organizations found</p>
       )}
-      {/* {companies.length > 0 ? (
-        <ul>
-          {companies.map(company => (
-            <li key={company._id}>
-              <h2>{company.name}</h2>
-              <ul>
-                {company.users.map(user => (
-                  <li key={user._id}>{user.name} ({user.email})</li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No companies found</p>
-      )} */}
     </div>
   );
 };
 
-export default Companies;
+export default Organizations;

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../axiosConfig.js";
 import { useParams } from "react-router-dom";
-import "./styles/CompanyDetails.css";
+import "./styles/OrganizationDetails.css";
 
-const CompanyDetails = () => {
+const OrganizationDetails = () => {
   const { companyId } = useParams();
   const [company, setCompany] = useState(null);
   const [error, setError] = useState(null);
@@ -107,7 +107,7 @@ const CompanyDetails = () => {
         </div>
       )}
 
-      <h3>Edit Company Below:</h3>
+      <h3>Edit Organization Below:</h3>
       <h4>Invite a New Employee</h4>
       <form onSubmit={inviteUser}>
         <input
@@ -143,4 +143,4 @@ const CompanyDetails = () => {
   );
 };
 
-export default CompanyDetails;
+export default OrganizationDetails;

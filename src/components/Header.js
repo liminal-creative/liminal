@@ -21,12 +21,12 @@ const Header = () => {
                         <Link to="/surveys" style={styles.navLink}>Surveys</Link>
                         {(auth?.user?.isAdmin && auth?.user.organizationId.name === "liminal") && (
                             <>
-                            <Link to="/admin/companies" style={styles.navLink}>Organizations</Link>
-                            <Link to="/add-company" style={styles.navLink}>Add Organization</Link>
+                            <Link to="/admin/organizations" style={styles.navLink}>Organizations</Link>
+                            <Link to="/add-organization" style={styles.navLink}>Add Organization</Link>
                             </>
                         )}
                         {(auth?.user?.isTeamLeader) && (
-                            <Link to={`/companies/${auth.user.organizationId._id}`} style={styles.navLink}>Progress</Link>
+                            <Link to={`/organization/${auth.user.organizationId._id}`} style={styles.navLink}>Progress</Link>
                         )}
                         {/* <Link to="/invite" style={styles.navLink}> Invite someone </Link> */}
                         <div style={styles.userMenu}>

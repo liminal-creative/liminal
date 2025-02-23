@@ -11,9 +11,9 @@ import Surveys from './screens/Surveys.js';
 import { AuthProvider } from './context/AuthContext.js';
 import Header from './components/Header.js';
 import Invite from './screens/Invite.js';
-import Companies from './screens/admin/Companies.js';
-import CompanyDetails from './screens/CompanyDetails.js';
-import AddCompany from './screens/admin/AddCompany.js';
+import Organizations from './screens/admin/Organizations.js';
+import OrganizationDetails from './screens/OrganizationDetails.js';
+import AddOrganization from './screens/admin/AddOrganization.js';
 import ProtectedRoute from './screens/auth/ProtectedRoute.js';
 
 function App() {
@@ -33,9 +33,9 @@ function App() {
           <Route path="/surveys" element={<Surveys />} />
           <Route path="/invite" element={<Invite />} />
           <Route path="/survey/:id" element={<Survey />} />
-          <Route path="/admin/companies" element={<ProtectedRoute component={Companies} requiredRole="admin"/>} />
-          <Route path="/companies/:companyId" element={<ProtectedRoute component={CompanyDetails} requiredRole="teamLeader"/>} />
-          <Route path="/add-company" element={<ProtectedRoute component={AddCompany} requiredRole="admin"/>} />
+          <Route path="/admin/organizations" element={<ProtectedRoute component={Organizations} requiredRole="admin"/>} />
+          <Route path="/organizations/:companyId" element={<ProtectedRoute component={OrganizationDetails} requiredRole="teamLeader"/>} />
+          <Route path="/add-organization" element={<ProtectedRoute component={AddOrganization} requiredRole="admin"/>} />
         </Routes>
       </div>
     </Router>
