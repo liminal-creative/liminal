@@ -57,6 +57,51 @@ const OrganizationDetails = () => {
     }
   };
 
+  const sendReminder = async (user) => {
+    const { email, completedSurveyIndex } = user;
+    setEmailStatus((prev) => ({ ...prev, [user._id]: 'sending' })); // Update status to "sending"
+
+    try {
+      const subject = `Reminder: Survey Progress`;
+      const text = `Hi ${user.name},\n\nYou are currently on survey ${completedSurveyIndex + 1} out of 10. Please complete your surveys soon.\n\nThank you!`;
+      const html = `<p>Hi ${user.name},</p><p> This message is from the Liminal Core Messaging App. You are currently on survey <strong>${completedSurveyIndex + 1}</strong> out of 10. Please complete your surveys soon.</p><p>Thank you!</p>`;
+
+      await axiosInstance.post('/api/send-email', {
+        to: email,
+        subject,
+        text,
+        html,
+      });
+
+      setEmailStatus((prev) => ({ ...prev, [user._id]: 'sent' })); // Update status to "sent"
+    } catch (error) {
+      console.error('Error sending reminder:', error);
+      setEmailStatus((prev) => ({ ...prev, [user._id]: 'error' })); // Update status to "error"
+    }
+  };
+
+  const deleteUser = async (userId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this user? This will also delete their survey answers."
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      const response = await axiosInstance.delete(`/api/companies/${companyId}/users/${userId}`);
+      alert(response.data.message);
+
+      // Refresh company data after deletion
+      setCompany((prevCompany) => ({
+        ...prevCompany,
+        users: prevCompany.users.filter(user => user._id !== userId),
+      }));
+    } catch (error) {
+      alert("Error deleting user");
+    }
+  };
+
+
   const compileAnswers = async () => {
     setLoadingAnswers(true);
     try {
@@ -80,15 +125,29 @@ const OrganizationDetails = () => {
   return (
     <div className="page-container">
       <h1>{company.name}</h1>
-      
+
       <h3>Users in this organization:</h3>
       <ul>
         {company.users.map((user) => (
-           
+
+          // <li key={user._id}>
+          //   {user.name} ({user.email}) - Completed ({user.completedSurveyIndex}/10) surveys
+          //   {user.isTeamLeader ?  " - Team leader" : null}
+          // </li>
           <li key={user._id}>
-            {user.name} ({user.email}) - Completed ({user.completedSurveyIndex}/10) surveys
-            {user.isTeamLeader ?  " - Team leader" : null}
+            {user.name} ({user.email}) completed: ({user.completedSurveyIndex}/10) surveys
+            {/* <button onClick={() => sendReminder(user)}>Send Reminder</button> */}
+            <button
+              onClick={() => sendReminder(user)}
+              disabled={emailStatus[user._id] === 'sending'}
+            >
+              {emailStatus[user._id] === 'sending' ? 'Sending...' : 'Send Reminder'}
+            </button>
+            {emailStatus[user._id] === 'sent' && <span className="success-message">Email Sent</span>}
+            {emailStatus[user._id] === 'error' && <span className="error-message">Error Sending Email</span>}
+            <button onClick={() => deleteUser(user._id)} className="delete-button">Delete</button>
           </li>
+
         ))}
       </ul>
 
@@ -138,7 +197,7 @@ const OrganizationDetails = () => {
       </select>
       <button onClick={changeLeader}>Change Leader</button>
 
-      
+
     </div>
   );
 };
