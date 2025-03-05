@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// import axios from 'axios';
 import axiosInstance from '../../axiosConfig.js';
 import { useNavigate } from 'react-router-dom';
 
@@ -53,51 +52,54 @@ const Signup = () => {
   };
 
   return (
-    <div>
-      <h1>Sign Up</h1>
+    <div class="sign-up-container">
       {!userDetails ? (
         <div>
-          <label>Invite Code:</label>
-          <input
-            type="text"
-            value={inviteCode}
-            onChange={(e) => setInviteCode(e.target.value)}
-          />
-          <button type="button" onClick={handleInviteSubmit}>
-            Verify Invite Code
-          </button>
+          <div className='invite-code-container'>
+            <input
+              type="text"
+              value={inviteCode}
+              placeholder="Invite Code"
+              class="invite-code-input"
+              onChange={(e) => setInviteCode(e.target.value)}
+            />
+            <button type="button" class="invite-code-btn" onClick={handleInviteSubmit}>
+              Verify Invite Code
+            </button>
+
+          </div>
           {error && <p style={{ color: 'red' }}>{error}</p>}
         </div>
       ) : (
         <form onSubmit={handleSubmit}>
           <h2>Welcome, {userDetails.name}</h2>
           <div>
-            <label>Role:</label>
             <input
               type="text"
               name="role"
               value={formData.role}
               onChange={handleChange}
+              placeholder="Role"
               required
             />
           </div>
           <div>
-            <label>Password:</label>
             <input
               type="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
+              placeholder="Password"
               required
             />
           </div>
           <div>
-            <label>Confirm Password:</label>
             <input
               type="password"
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
+              placeholder="Confirm Password"
               required
             />
           </div>

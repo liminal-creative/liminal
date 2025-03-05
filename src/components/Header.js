@@ -42,7 +42,7 @@ const Header = () => {
                     </>
                 ) : (
                     <>
-                        <Link to="/signup" style={styles.navLink}>Sign Up</Link>
+                        {/* <Link to="/signup" style={styles.navLink}>Sign Up</Link> */}
                         <Link to="/signin" style={styles.navLink}>Sign In</Link>
                     </>
                 )}

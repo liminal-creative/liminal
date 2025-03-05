@@ -15,6 +15,7 @@ import Organizations from './screens/admin/Organizations.js';
 import OrganizationDetails from './screens/OrganizationDetails.js';
 import AddOrganization from './screens/admin/AddOrganization.js';
 import ProtectedRoute from './screens/auth/ProtectedRoute.js';
+import AuthPage from './screens/auth/Auth.js';
 
 function App() {
   const [message, setMessage] = useState('');
@@ -26,8 +27,9 @@ function App() {
         <Header/>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/signin" element={<Signin />} />
+          {/* <Route path="/signup" element={<Signup />} /> */}
+          <Route path="/signin" element={<AuthPage />} />
+          {/* <Route path="/signin" element={<Signin />} /> */}
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/surveys" element={<Surveys />} />

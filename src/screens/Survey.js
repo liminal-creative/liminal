@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-// import axios from 'axios';
 import axiosInstance from '../axiosConfig.js';
 import './styles/SurveyPage.css';
 import AuthContext from '../context/AuthContext.js';
@@ -37,7 +36,6 @@ const SurveyPage = () => {
     
         fetchSurvey();
     }, [id]);
-    
 
     const handleChange = (questionId, value, questionType) => {
         // Update answers
@@ -53,23 +51,6 @@ const SurveyPage = () => {
         }
     };
 
-    // const handleDragEnd = (result) => {
-    //     if (!result.destination) return;
-
-    //     // Extract the question ID from the droppableId
-    //     const questionId = result.source.droppableId.split('-')[1];
-
-    //     const currentOptions = answers[questionId]?.answer || survey.questions.find(q => q._id === questionId).options;
-
-    //     const reorderedOptions = Array.from(currentOptions);
-    //     const [movedOption] = reorderedOptions.splice(result.source.index, 1);
-    //     reorderedOptions.splice(result.destination.index, 0, movedOption);
-
-    //     setAnswers((prevAnswers) => ({
-    //         ...prevAnswers,
-    //         [questionId]: { type: 'ranking', answer: reorderedOptions },
-    //     }));
-    // };
     const handleDragEnd = (result) => {
         if (!result.destination) return;
     
@@ -281,32 +262,6 @@ const SurveyPage = () => {
                                         </Droppable>
                                     </DragDropContext>
                                 )}
-
-                                {/* {question.type === 'ranking' && (
-                                    <DragDropContext onDragEnd={handleDragEnd}>
-                                            <Droppable droppableId={`droppable-${question._id}`}>
-                                                {(provided) => (
-                                                    <div ref={provided.innerRef} {...provided.droppableProps} className="ranking-container">
-                                                        {(answers[question._id]?.answer || question.options).map((option, idx) => (
-                                                            <Draggable key={`${question._id}-${option}`} draggableId={`${question._id}-${option}`} index={idx}>
-                                                                {(provided) => (
-                                                                    <div
-                                                                        ref={provided.innerRef}
-                                                                        {...provided.draggableProps}
-                                                                        {...provided.dragHandleProps}
-                                                                        className="ranking-item"
-                                                                    >
-                                                                        {option}
-                                                                    </div>
-                                                                )}
-                                                            </Draggable>
-                                                        ))}
-                                                        {provided.placeholder}
-                                                    </div>
-                                                )}
-                                            </Droppable>
-                                    </DragDropContext>
-                                )} */}
 
                             </>
                         )}

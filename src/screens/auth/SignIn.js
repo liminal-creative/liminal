@@ -36,38 +36,51 @@ const Signin = () => {
       navigate("/surveys");
     } catch (error) {
       console.error('Error:', error);
-      if (error.response && error.response.status === 400) {
-        setError('Incorrect email or password. Please try again.'); 
+
+      if (error.response) {
+        // Server responded with an error status code
+        switch (error.response.status) {
+          case 400:
+            setError('Incorrect email or password. Please try again.');
+            break;
+          case 404:
+            setError('User not found. Please check your email or complete sign up.');
+            break;
+          case 500:
+            setError('Internal server error. Please try again later.');
+            break;
+          default:
+            setError('An unexpected error occurred. Please try again.');
+        }
+      } else if (error.request) {
+        setError('Network error. Please check your connection.');
       } else {
-        setError('An error occurred. Please try again later.');
+        setError('An error occurred. Please try again.');
       }
     }
   };
 
   return (
-    <div>
-      <h1>Sign In</h1>
+    <div class="sign-in-container">
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Email:</label>
-          <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+          <input type="email" name="email" placeholder="Email" class="email-input" value={formData.email} onChange={handleChange} required />
         </div>
         <div>
-          <label>Password:</label>
-          <input type="password" name="password" value={formData.password} onChange={handleChange} required />
+          <input type="password" name="password" placeholder="Password" class="password-input" value={formData.password} onChange={handleChange} required />
         </div>
+        <button class="submit-btn" type="submit">Log In</button>
+        {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
         <div>
-          <input 
-            type="checkbox" 
-            name="staySignedIn" 
-            checked={formData.staySignedIn} 
-            onChange={handleChange} 
+          <input
+            type="checkbox"
+            name="staySignedIn"
+            checked={formData.staySignedIn}
+            onChange={handleChange}
           />
           <label> Stay Signed In </label>
         </div>
-        <button type="submit">Sign In</button>
-        {error && <div style={{color: 'red', marginTop: '10px'}}>{error}</div>} 
-        <Link to="/forgot-password"><p>Forgot Password?</p></Link>
+        <Link to="/forgot-password" className='forgot-password'><p>Forgot Password?</p></Link>
       </form>
     </div>
   );
