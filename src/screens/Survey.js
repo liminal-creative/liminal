@@ -85,34 +85,28 @@ const SurveyPage = () => {
 
     const handleSubmit = async (e) => {
 
-        // const surveyData = {
-        //     userId: auth.user._id,
-        //     surveyId: id,
-        //     answers: Object.keys(answers).map((questionId, index) => ({
-        //         question: survey.questions[index].question,
-        //         answer: answers[questionId].answer
-        //     }))
-        // };
-
-
         e.preventDefault();
         try {
-            // Upload all selected files
-            const uploadedFileUrls = [];
+            const formData = new FormData();
+
+            // Append all selected files to FormData
             for (let i = 0; i < files.length; i++) {
                 if (files[i]) {
-                    const formData = new FormData();
-                    formData.append('file', files[i]);
-                    console.log('companyid' , auth.company, auth, auth.user.organizationId._id)
-                    formData.append('companyId', auth.user.organizationId._id);
-
-                    const fileResponse = await axiosInstance.post('/api/files/upload', formData, {
-                        headers: { 'Content-Type': 'multipart/form-data' },
-                    });
-
-                    uploadedFileUrls.push(fileResponse.data.fileUrl);
+                    formData.append('files', files[i]); // Append multiple files
                 }
             }
+
+            // Append organization ID
+            console.log('companyId:', auth.user.organizationId._id);
+            formData.append('companyId', auth.user.organizationId._id);
+
+            // Send all files in a single request
+            const fileResponse = await axiosInstance.post('/api/files/upload-multiple', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+
+            const uploadedFileUrls = fileResponse.data.fileUrls;
+
             // Submit survey along with uploaded file URLs
             const surveyData = {
                 userId: auth.user._id,
@@ -125,14 +119,7 @@ const SurveyPage = () => {
             };
 
             const response = await axiosInstance.post('/api/surveys/submit-survey', surveyData);
-            // const response = await axiosInstance.post('/api/surveys/submit-survey', {
-            //     userId: auth.user._id,
-            //     surveyId: id,
-            //     answers: Object.keys(answers).map(questionId => ({
-            //         type: answers[questionId].type,
-            //         answer: answers[questionId].answer
-            //     }))
-            // });
+
             console.log(response.data);
             updateUser({
                 ...auth.user,
@@ -300,24 +287,24 @@ const SurveyPage = () => {
                                         </Droppable>
                                     </DragDropContext>
                                 )}
-
+                                {question.type === 'files' && (<div className="file-upload-section">
+                                    {[0, 1, 2].map((index) => (
+                                        <div key={index} className="file-upload-column">
+                                            <label>Upload File {index + 1}</label>
+                                            <input
+                                                type="file"
+                                                onChange={(e) => handleFileChange(index, e.target.files[0])}
+                                            />
+                                            {files[index] && <p>{files[index].name}</p>}
+                                        </div>
+                                    ))}
+                                </div>)}
                             </>
                         )}
                     </div>
                 ))}
 
-                <div className="file-upload-section">
-                    {[0, 1, 2].map((index) => (
-                        <div key={index} className="file-upload-column">
-                            <label>Upload File {index + 1}</label>
-                            <input
-                                type="file"
-                                onChange={(e) => handleFileChange(index, e.target.files[0])}
-                            />
-                            {files[index] && <p>{files[index].name}</p>}
-                        </div>
-                    ))}
-                </div>
+
 
                 <button type="submit">Submit</button>
             </form>

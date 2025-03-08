@@ -134,7 +134,6 @@ button[type="submit"] {
 .file-upload-column {
     flex: 1;
     padding: 10px;
-    border: 1px solid #ccc;
     text-align: center;
 }
 
