@@ -125,3 +125,20 @@ button[type="submit"] {
     border-radius: 5px;
     cursor: grab;
 }
+.file-upload-section {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.file-upload-column {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.file-upload-column input {
+    display: block;
+    margin: 10px auto;
+}

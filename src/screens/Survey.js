@@ -4,11 +4,13 @@ import axiosInstance from '../axiosConfig.js';
 import './styles/SurveyPage.css';
 import AuthContext from '../context/AuthContext.js';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import FileUpload from '../components/FileUpload.js';
 
 const SurveyPage = () => {
     const { id } = useParams();
     const [survey, setSurvey] = useState(null);
     const [answers, setAnswers] = useState({});
+    const [files, setFiles] = useState([null, null, null]);
     const [submissionSuccess, setSubmissionSuccess] = useState(false);
     const navigate = useNavigate();
     const { auth, updateUser } = useContext(AuthContext);
@@ -18,7 +20,7 @@ const SurveyPage = () => {
             try {
                 const response = await axiosInstance.get(`/api/surveys/${id}`);
                 setSurvey(response.data);
-    
+
                 const initialAnswers = {};
                 response.data.questions.forEach(q => {
                     initialAnswers[q._id] = {
@@ -26,14 +28,14 @@ const SurveyPage = () => {
                         answer: q.type === 'ranking' ? [...q.options] : ''
                     };
                 });
-    
+
                 setAnswers(initialAnswers);
                 setSubmissionSuccess(false);
             } catch (error) {
                 console.error('Error fetching survey:', error);
             }
         };
-    
+
         fetchSurvey();
     }, [id]);
 
@@ -51,20 +53,28 @@ const SurveyPage = () => {
         }
     };
 
+    const handleFileChange = (index, file) => {
+        setFiles(prevFiles => {
+            const updatedFiles = [...prevFiles];
+            updatedFiles[index] = file;
+            return updatedFiles;
+        });
+    };
+
     const handleDragEnd = (result) => {
         if (!result.destination) return;
-    
+
         const questionId = result.source.droppableId.replace('droppable-', '');
-    
+
         let currentOptions =
             answers[questionId]?.answer ||
             survey.questions.find(q => q._id === questionId)?.options ||
             [];
-    
+
         const reorderedOptions = [...currentOptions];
         const [movedOption] = reorderedOptions.splice(result.source.index, 1);
         reorderedOptions.splice(result.destination.index, 0, movedOption);
-    
+
         setAnswers((prevAnswers) => ({
             ...prevAnswers,
             [questionId]: { type: 'ranking', answer: reorderedOptions },
@@ -75,26 +85,54 @@ const SurveyPage = () => {
 
     const handleSubmit = async (e) => {
 
-        const surveyData = { //NEW
-            userId: auth.user._id,
-            surveyId: id,
-            answers: Object.keys(answers).map((questionId, index) => ({
-                question: survey.questions[index].question,
-                answer: answers[questionId].answer
-            }))
-        };
+        // const surveyData = {
+        //     userId: auth.user._id,
+        //     surveyId: id,
+        //     answers: Object.keys(answers).map((questionId, index) => ({
+        //         question: survey.questions[index].question,
+        //         answer: answers[questionId].answer
+        //     }))
+        // };
 
 
         e.preventDefault();
         try {
-            const response = await axiosInstance.post('/api/surveys/submit-survey', {
+            // Upload all selected files
+            const uploadedFileUrls = [];
+            for (let i = 0; i < files.length; i++) {
+                if (files[i]) {
+                    const formData = new FormData();
+                    formData.append('file', files[i]);
+                    console.log('companyid' , auth.company, auth, auth.user.organizationId._id)
+                    formData.append('companyId', auth.user.organizationId._id);
+
+                    const fileResponse = await axiosInstance.post('/api/files/upload', formData, {
+                        headers: { 'Content-Type': 'multipart/form-data' },
+                    });
+
+                    uploadedFileUrls.push(fileResponse.data.fileUrl);
+                }
+            }
+            // Submit survey along with uploaded file URLs
+            const surveyData = {
                 userId: auth.user._id,
                 surveyId: id,
                 answers: Object.keys(answers).map(questionId => ({
                     type: answers[questionId].type,
                     answer: answers[questionId].answer
-                }))
-            });
+                })),
+                uploadedFiles: uploadedFileUrls // Store file URLs in survey submission
+            };
+
+            const response = await axiosInstance.post('/api/surveys/submit-survey', surveyData);
+            // const response = await axiosInstance.post('/api/surveys/submit-survey', {
+            //     userId: auth.user._id,
+            //     surveyId: id,
+            //     answers: Object.keys(answers).map(questionId => ({
+            //         type: answers[questionId].type,
+            //         answer: answers[questionId].answer
+            //     }))
+            // });
             console.log(response.data);
             updateUser({
                 ...auth.user,
@@ -267,6 +305,19 @@ const SurveyPage = () => {
                         )}
                     </div>
                 ))}
+
+                <div className="file-upload-section">
+                    {[0, 1, 2].map((index) => (
+                        <div key={index} className="file-upload-column">
+                            <label>Upload File {index + 1}</label>
+                            <input
+                                type="file"
+                                onChange={(e) => handleFileChange(index, e.target.files[0])}
+                            />
+                            {files[index] && <p>{files[index].name}</p>}
+                        </div>
+                    ))}
+                </div>
 
                 <button type="submit">Submit</button>
             </form>

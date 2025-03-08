@@ -1,52 +1,66 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from 'react';
 import axiosInstance from '../axiosConfig.js';
-import AuthContext from '../context/AuthContext.js';
 
-const FileUpload = () => {
-    const { auth } = useContext(AuthContext);
-  const [file, setFile] = useState(null);
-  const [uploading, setUploading] = useState(false);
-  const [message, setMessage] = useState("");
+const FileUpload = ({ companyId, onUploadSuccess }) => {
+    const [files, setFiles] = useState([]);
+    const [uploading, setUploading] = useState(false);
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-  };
+    const handleFileChange = (e) => {
+        if (e.target.files.length > 3) {
+            alert("You can only upload up to 3 files.");
+            return;
+        }
+        setFiles([...e.target.files]);
+    };
 
-  const handleUpload = async () => {
-    if (!file) {
-      setMessage("Please select a file first.");
-      return;
-    }
+    const handleUpload = async () => {
+        if (files.length === 0) {
+            alert("Please select files to upload.");
+            return;
+        }
 
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("companyId", auth.user.organizationId
-        ._id); 
-    try {
-      setUploading(true);
-      const response = await axiosInstance.post("/api/files/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+        setUploading(true);
+        const formData = new FormData();
+        formData.append('companyId', companyId);
 
-      setMessage("File uploaded successfully!");
-      setFile(null);
-    } catch (error) {
-      setMessage("Error uploading file. Please try again.");
-    } finally {
-      setUploading(false);
-    }
-  };
+        files.forEach(file => {
+            formData.append('file', file);
+        });
 
-  return (
-    <div>
-      <h2>Upload a File</h2>
-      <input type="file" onChange={handleFileChange} />
-      <button onClick={handleUpload} disabled={uploading}>
-        {uploading ? "Uploading..." : "Upload"}
-      </button>
-      {message && <p>{message}</p>}
-    </div>
-  );
+        try {
+            const response = await axiosInstance.post('/api/upload', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+
+            console.log(response.data);
+            onUploadSuccess(response.data.fileUrl);
+            setFiles([]);
+        } catch (error) {
+            console.error('Upload failed:', error);
+        } finally {
+            setUploading(false);
+        }
+    };
+
+    return (
+        <div className="file-upload-container">
+            <input type="file" multiple accept="image/*,application/pdf" onChange={handleFileChange} />
+            <button onClick={handleUpload} disabled={uploading || files.length === 0}>
+                {uploading ? "Uploading..." : "Upload Files"}
+            </button>
+            <div className="file-preview-grid">
+                {files.map((file, index) => (
+                    <div key={index} className="file-preview">
+                        {file.type.startsWith('image') ? (
+                            <img src={URL.createObjectURL(file)} alt="Preview" />
+                        ) : (
+                            <p>{file.name}</p>
+                        )}
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
 };
 
 export default FileUpload;
