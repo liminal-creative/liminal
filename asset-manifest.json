@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/liminal/static/css/main.ba98e599.css",
-    "main.js": "/liminal/static/js/main.f0b71476.js",
+    "main.css": "/liminal/static/css/main.6aa90987.css",
+    "main.js": "/liminal/static/js/main.b701c4f6.js",
     "static/js/453.f52bf5bd.chunk.js": "/liminal/static/js/453.f52bf5bd.chunk.js",
     "static/media/authImage.png": "/liminal/static/media/authImage.07ff1027dbda72ca5a0c.png",
     "static/media/Logo.svg": "/liminal/static/media/Logo.cd69cae1707bc419c51faee6832839d9.svg",
     "index.html": "/liminal/index.html",
-    "main.ba98e599.css.map": "/liminal/static/css/main.ba98e599.css.map",
-    "main.f0b71476.js.map": "/liminal/static/js/main.f0b71476.js.map",
+    "main.6aa90987.css.map": "/liminal/static/css/main.6aa90987.css.map",
+    "main.b701c4f6.js.map": "/liminal/static/js/main.b701c4f6.js.map",
     "453.f52bf5bd.chunk.js.map": "/liminal/static/js/453.f52bf5bd.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.ba98e599.css",
-    "static/js/main.f0b71476.js"
+    "static/css/main.6aa90987.css",
+    "static/js/main.b701c4f6.js"
   ]
 }
