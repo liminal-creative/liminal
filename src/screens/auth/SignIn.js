@@ -65,10 +65,10 @@ const Signin = () => {
     <div className={styles.signInContainer}>
       <form onSubmit={handleSubmit}>
         <div>
-          <input type="email" name="email" placeholder="Email"  className={styles.emailInput}  value={formData.email} onChange={handleChange} required />
+          <input type="email" name="email" placeholder="Email"  className={styles.firstInput}  value={formData.email} onChange={handleChange} required />
         </div>
         <div>
-          <input type="password" name="password" placeholder="Password" className={styles.passwordInput}  value={formData.password} onChange={handleChange} required />
+          <input type="password" name="password" placeholder="Password" className={styles.middleInput}  value={formData.password} onChange={handleChange} required />
         </div>
         <button className={styles.submitBtn} type="submit">Log In</button>
         {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}

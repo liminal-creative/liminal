@@ -79,6 +79,7 @@ const Signup = ({ setIsSignupActive }) => {
             <input
               type="text"
               name="role"
+              className={styles.firstInput}
               value={formData.role}
               onChange={handleChange}
               placeholder="Role"
@@ -89,6 +90,7 @@ const Signup = ({ setIsSignupActive }) => {
             <input
               type="password"
               name="password"
+              className={styles.middleInput} 
               value={formData.password}
               onChange={handleChange}
               placeholder="Password"
@@ -99,6 +101,7 @@ const Signup = ({ setIsSignupActive }) => {
             <input
               type="password"
               name="confirmPassword"
+              className={styles.middleInput} 
               value={formData.confirmPassword}
               onChange={handleChange}
               placeholder="Confirm Password"
@@ -106,7 +109,7 @@ const Signup = ({ setIsSignupActive }) => {
             />
           </div>
           {error && <p style={{ color: 'red' }}>{error}</p>}
-          <button type="submit">Complete Signup</button>
+          <button className={styles.submitBtn} type="submit">Complete Signup</button>
         </form>
       )}
     </div>

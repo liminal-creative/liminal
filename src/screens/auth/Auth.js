@@ -20,9 +20,9 @@ const AuthPage = () => {
                     <img src={logo} alt="Illustration" />
                     <h2>Have an invite code?</h2>
                     <Signup setIsSignupActive={setIsSignupActive} />
-                    <p>— OR —</p>
                     {!isSignupActive && (
                         <>
+                            <p>— OR —</p>
                             <h2>Sign in to your account</h2>
                             <Signin />
                         </>

@@ -75,13 +75,13 @@
 .inviteCodeBtn:hover{
     color: white;
 }
-.emailInput{
+.firstInput{
     border-radius: 15px 15px 0px 0px;
     margin-bottom: 3px;
 
 }
 
-.passwordInput{
+.middleInput{
     margin-bottom: 3px;
 }
 
@@ -102,7 +102,7 @@
     height: 100%;
 }
 
-.signInContainer, .emailInput, .passwordInput {
+.signInContainer, .firstInput, .middleInput {
  width: 100% !important;
  /* display: flex;
  width: 100%;
