@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import axiosInstance from '../../axiosConfig.js';
 import { useNavigate, Link } from 'react-router-dom';
 import AuthContext from '../../context/AuthContext.js';
+import styles from "../styles/AuthPage.module.css";
 
 const Signin = () => {
   const [formData, setFormData] = useState({
@@ -61,15 +62,15 @@ const Signin = () => {
   };
 
   return (
-    <div class="sign-in-container">
+    <div className={styles.signInContainer}>
       <form onSubmit={handleSubmit}>
         <div>
-          <input type="email" name="email" placeholder="Email" class="email-input" value={formData.email} onChange={handleChange} required />
+          <input type="email" name="email" placeholder="Email"  className={styles.emailInput}  value={formData.email} onChange={handleChange} required />
         </div>
         <div>
-          <input type="password" name="password" placeholder="Password" class="password-input" value={formData.password} onChange={handleChange} required />
+          <input type="password" name="password" placeholder="Password" className={styles.passwordInput}  value={formData.password} onChange={handleChange} required />
         </div>
-        <button class="submit-btn" type="submit">Log In</button>
+        <button className={styles.submitBtn} type="submit">Log In</button>
         {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
         <div>
           <input
@@ -80,7 +81,7 @@ const Signin = () => {
           />
           <label> Stay Signed In </label>
         </div>
-        <Link to="/forgot-password" className='forgot-password'><p>Forgot Password?</p></Link>
+        <Link to="/forgot-password" className={styles.forgotPassword} ><p>Forgot Password?</p></Link>
       </form>
     </div>
   );

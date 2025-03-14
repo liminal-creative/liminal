@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import axiosInstance from '../../axiosConfig.js';
 import { useNavigate } from 'react-router-dom';
+import styles from "../styles/AuthPage.module.css";
 
-const Signup = () => {
+const Signup = ({ setIsSignupActive }) => {
   const [inviteCode, setInviteCode] = useState('');
   const [formData, setFormData] = useState({
     role: '',
@@ -18,6 +19,7 @@ const Signup = () => {
       const response = await axiosInstance.get(`/api/auth/invite/${inviteCode}`);
       setUserDetails(response.data);
       setError('');
+      setIsSignupActive(true);
     } catch (err) {
       setError('Invalid invite code. Please try again.');
     }
@@ -52,18 +54,18 @@ const Signup = () => {
   };
 
   return (
-    <div class="sign-up-container">
+    <div  className={styles.signUpContainer} >
       {!userDetails ? (
         <div>
-          <div className='invite-code-container'>
+          <div  className={styles.inviteCodeContainer}>
             <input
               type="text"
               value={inviteCode}
               placeholder="Invite Code"
-              class="invite-code-input"
+              className={styles.inviteCodeInput}
               onChange={(e) => setInviteCode(e.target.value)}
             />
-            <button type="button" class="invite-code-btn" onClick={handleInviteSubmit}>
+            <button type="button" className={styles.inviteCodeBtn}  onClick={handleInviteSubmit}>
               Verify Invite Code
             </button>
 

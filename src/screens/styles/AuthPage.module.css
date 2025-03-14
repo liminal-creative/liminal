@@ -1,4 +1,12 @@
-h2 {
+.authContainer {
+    display: flex;
+    height: 100vh;
+    /* flex-direction: column; */
+    /* border: 2px solid red; */
+    overflow:auto
+;}
+
+.authContainer h2 {
     color: #888;
     text-align: center;
     font-size: 20px;
@@ -8,50 +16,44 @@ h2 {
     letter-spacing: -0.32px;
 }
 
-input {
+.authContainer input {
     background: #F1F1F1;
     color: #888;
     padding: 15px 20px;
     border: none;
     font-size: 16px;
+    /* width: 100%; */
 }
 
-.auth-container {
-    display: flex;
-    height: 100vh;
-    flex-direction: column;
-}
-
-.auth-image {
+.authImage {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.auth-image img {
+.authImage img {
     width: 95%;
     height: 95%;
     object-fit: cover;
 }
 
-.auth-form {
+.authForm {
     flex: 1;
     display: flex;
-    /* flex-direction: column; */
     justify-content: center;
 }
 
-.auth-form img{
+.authForm img{
     margin-bottom: 30px;
 }
 
-.logo-title {
+.logoTitle {
     font-size: 24px;
     font-weight: bold;
 }
 
-.invite-code-btn{
+.inviteCodeBtn{
     color: black;
     background: #FBB7FF;
     border-radius: 0 15px 15px 0px;
@@ -59,36 +61,37 @@ input {
     width: 50%;
     margin: 0;
 }
-.invite-code-container {
+.inviteCodeContainer {
     display: flex;
     width: 100%;
     align-items: stretch;
 }
 
-.invite-code-input{
+.inviteCodeInput{
     border-radius: 15px 0 0px 15px;
     width: 50%;
     margin-right: 3px;
 }
-.invite-code-btn:hover{
+.inviteCodeBtn:hover{
     color: white;
 }
-.email-input{
+.emailInput{
     border-radius: 15px 15px 0px 0px;
     margin-bottom: 3px;
 
 }
 
-.password-input{
+.passwordInput{
     margin-bottom: 3px;
 }
 
-.submit-btn{
+.submitBtn{
     width: 100%;
     border-radius: 0 0 15px 15px !important;
     margin: 0 0 20px 0 !important;
+    padding: 14px 20px ;
 }
-.auth-form-inner{
+.authFormInner{
     width: 480px;
     padding: 20px;
     display: flex;
@@ -99,25 +102,27 @@ input {
     height: 100%;
 }
 
-.sign-in-container, .email-input, .password-input {
+.signInContainer, .emailInput, .passwordInput {
+ width: 100% !important;
+ /* display: flex;
  width: 100%;
+ align-items: stretch; */
  box-sizing: border-box;
 }
-.sign-up-container{
+.signUpContainer{
     width: 100%;
 }
-.forgot-password{
+.forgotPassword{
     color:black;
 }
 
-/* Responsive: Make it side by side on larger screens */
-@media (min-width: 768px) {
-    .auth-container {
+@media (max-width: 768px) {
+    .authContainer {
         flex-direction: row;
     }
 
-    .auth-image,
-    .auth-form {
+    .authImage,
+    .authForm {
         width: 50%;
     }
 }
