@@ -134,10 +134,10 @@ button[type="submit"] {
 .file-upload-column {
     flex: 1;
     padding: 10px;
-    text-align: center;
+    /* text-align: center; */
 }
 
 .file-upload-column input {
     display: block;
-    margin: 10px auto;
+    /* margin: 10px auto; */
 }

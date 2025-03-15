@@ -10,7 +10,7 @@ const SurveyPage = () => {
     const { id } = useParams();
     const [survey, setSurvey] = useState(null);
     const [answers, setAnswers] = useState({});
-    const [files, setFiles] = useState([null, null, null]);
+    const [files, setFiles] = useState([]);
     const [submissionSuccess, setSubmissionSuccess] = useState(false);
     const navigate = useNavigate();
     const { auth, updateUser } = useContext(AuthContext);
@@ -53,13 +53,16 @@ const SurveyPage = () => {
         }
     };
 
-    const handleFileChange = (index, file) => {
-        setFiles(prevFiles => {
-            const updatedFiles = [...prevFiles];
-            updatedFiles[index] = file;
-            return updatedFiles;
-        });
+    const handleFileChange = (file) => {
+        setFiles(prevFiles => [...prevFiles, file]);
     };
+    // const handleFileChange = (index, file) => {
+    //     setFiles(prevFiles => {
+    //         const updatedFiles = [...prevFiles];
+    //         updatedFiles[index] = file;
+    //         return updatedFiles;
+    //     });
+    // };
 
     const handleDragEnd = (result) => {
         if (!result.destination) return;
@@ -287,19 +290,62 @@ const SurveyPage = () => {
                                         </Droppable>
                                     </DragDropContext>
                                 )}
-                                {question.type === 'files' && (<div className="file-upload-section">
-                                    {[0, 1, 2].map((index) => (
-                                        <div key={index} className="file-upload-column">
-                                            <label>Upload File {index + 1}</label>
-                                            <input
-                                                type="file"
-                                                onChange={(e) => handleFileChange(index, e.target.files[0])}
-                                            />
-                                            {files[index] && <p>{files[index].name}</p>}
-                                        </div>
-                                    ))}
-                                </div>)}
+                                {question.type === 'files' && (
+                                    <div className="file-upload-section">
+                                        {[0, 1, 2].map((index) => (
+                                            <div key={index} className="file-upload-column">
+                                                <label>Upload File {index + 1}</label>
+                                                <input
+                                                    type="file"
+                                                    onChange={(e) => handleFileChange(e.target.files[0])}
+                                                />
+                                                {files[index] && <p>{files[index].name}</p>}
+                                            </div>
+                                        ))}
+                                    </div>)}
+
                             </>
+                        )}
+                        {question.type === 'conditional file' && (
+                            <div>
+                                <div>
+                                    <input
+                                        type="radio"
+                                        name={question._id}
+                                        value="Yes"
+                                        checked={answers[question._id]?.answer === "Yes"}
+                                        onChange={(e) => handleChange(question._id, e.target.value, question.type)}
+                                    />
+                                    <label>Yes</label>
+
+                                    <input
+                                        type="radio"
+                                        name={question._id}
+                                        value="No"
+                                        checked={answers[question._id]?.answer === "No"}
+                                        onChange={(e) => handleChange(question._id, e.target.value, question.type)}
+                                    />
+                                    <label>No</label>
+                                </div>
+
+                                {/* Show file upload only if "Yes" is selected */}
+                                {answers[question._id]?.answer === "Yes" && (
+                                    <>
+                                        {question.conditionalText && <p>{question.conditionalText}</p>}
+                                        <div className="file-upload-section">
+
+                                            <div key={index} className="file-upload-column">
+                                                <label>Upload File: </label>
+                                                <input
+                                                    type="file"
+                                                    onChange={(e) => handleFileChange(e.target.files[0])}
+                                                />
+                                                {files[index] && <p>{files[index].name}</p>}
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
                         )}
                     </div>
                 ))}
