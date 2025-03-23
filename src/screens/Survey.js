@@ -86,42 +86,115 @@ const SurveyPage = () => {
         console.log(answers)
     };
 
-    const handleSubmit = async (e) => {
+    // const handleSubmit = async (e) => {
 
+    //     e.preventDefault();
+    //     try {
+    //         const formData = new FormData();
+
+    //         // Append all selected files to FormData
+    //         for (let i = 0; i < files.length; i++) {
+    //             if (files[i]) {
+    //                 formData.append('files', files[i]); // Append multiple files
+    //             }
+    //         }
+
+    //         // Append organization ID
+    //         console.log('companyId:', auth.user.organizationId._id);
+    //         formData.append('companyId', auth.user.organizationId._id);
+
+    //         // Send all files in a single request
+    //         const fileResponse = await axiosInstance.post('/api/files/upload-multiple', formData, {
+    //             headers: { 'Content-Type': 'multipart/form-data' },
+    //         });
+
+    //         const uploadedFileUrls = fileResponse.data.fileUrls;
+
+    //         // Submit survey along with uploaded file URLs
+    //         const surveyData = {
+    //             userId: auth.user._id,
+    //             surveyId: id,
+    //             answers: Object.keys(answers).map(questionId => ({
+    //                 type: answers[questionId].type,
+    //                 answer: answers[questionId].answer
+    //             })),
+    //             uploadedFiles: uploadedFileUrls // Store file URLs in survey submission
+    //         };
+
+    //         const response = await axiosInstance.post('/api/surveys/submit-survey', surveyData);
+
+    //         console.log(response.data);
+    //         updateUser({
+    //             ...auth.user,
+    //             completedSurveyIndex: survey.order
+    //         });
+    //         setSubmissionSuccess(true);
+
+    //         const emailContent = `
+    //             <div style="padding: 0px">
+    //                 <p style="background-color: #e0f7ff; padding: 5px; margin: 0px" ><strong>Name</strong> </p>
+    //                 <p style="padding: 2px 2px 2px 15px;"> ${auth.user.name}</p>
+
+    //                 <p style="background-color: #e0f7ff; padding: 5px"><strong>Email</strong> </p>
+    //                 <p style="padding: 2px 2px 2px 15px;"> ${auth.user.email}</p>
+
+    //                 <p style="background-color: #e0f7ff; padding: 5px"><strong>Organization</strong> </p>
+    //                 <p style="padding: 2px 2px 2px 15px;"> ${auth.company}</p>
+
+    //                 ${surveyData.answers.map(qa => `
+    //                     <p style="background-color: #e0f7ff; padding: 5px"><strong>Question:</strong> ${qa.question}</p>
+    //                     <p style="padding: 2px 2px 2px 15px;">Answer: ${Array.isArray(qa.answer) ? qa.answer.join(', ') : qa.answer}</p>
+    //                 `).join('')}                    
+    //             </div>
+    //         `;
+
+    //         const emailResponse = await axiosInstance.post('/api/send-email', {
+    //             to: auth.user.email,
+    //             subject: `Survey Submission: ${survey.title}`,
+    //             text: surveyData.answers.map(qa => `Question: ${qa.question}\nAnswer: ${Array.isArray(qa.answer) ? qa.answer.join(', ') : qa.answer}`).join('\n\n'),
+    //             html: emailContent
+    //         });
+
+    //         console.log('Email sent:', emailResponse.data);
+
+    //     } catch (error) {
+    //         console.error('Error submitting survey:', error);
+    //     }
+    // };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const formData = new FormData();
 
-            // Append all selected files to FormData
-            for (let i = 0; i < files.length; i++) {
-                if (files[i]) {
-                    formData.append('files', files[i]); // Append multiple files
-                }
-            }
+            // Append all selected files
+            files.forEach(file => formData.append('files', file));
 
-            // Append organization ID
-            console.log('companyId:', auth.user.organizationId._id);
+            // Append other form data
             formData.append('companyId', auth.user.organizationId._id);
+            formData.append('userId', auth.user._id);
+            formData.append('surveyId', id);
+            
+            // answers: Object.keys(answers).map(questionId => ({
+            //                     type: answers[questionId].type,
+            //                     answer: answers[questionId].answer
+            //                 })),
 
-            // Send all files in a single request
-            const fileResponse = await axiosInstance.post('/api/files/upload-multiple', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' },
+            formData.append('answers', JSON.stringify(Object.keys(answers).map(questionId => ({
+                type: answers[questionId].type,
+                answer: answers[questionId].answer
+            }))));
+
+            // formData.append('answers', Object.keys(answers).map(questionId => ({
+            //     type: answers[questionId].type,
+            //     answer: answers[questionId].answer
+            // })));   
+            console.log('formData', formData)
+
+            // Submit everything in one request
+            const response = await axiosInstance.post('/api/surveys/submit-with-files-and-email', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
             });
-
-            const uploadedFileUrls = fileResponse.data.fileUrls;
-
-            // Submit survey along with uploaded file URLs
-            const surveyData = {
-                userId: auth.user._id,
-                surveyId: id,
-                answers: Object.keys(answers).map(questionId => ({
-                    type: answers[questionId].type,
-                    answer: answers[questionId].answer
-                })),
-                uploadedFiles: uploadedFileUrls // Store file URLs in survey submission
-            };
-
-            const response = await axiosInstance.post('/api/surveys/submit-survey', surveyData);
 
             console.log(response.data);
             updateUser({
@@ -130,35 +203,9 @@ const SurveyPage = () => {
             });
             setSubmissionSuccess(true);
 
-            const emailContent = `
-                <div style="padding: 0px">
-                    <p style="background-color: #e0f7ff; padding: 5px; margin: 0px" ><strong>Name</strong> </p>
-                    <p style="padding: 2px 2px 2px 15px;"> ${auth.user.name}</p>
-                    
-                    <p style="background-color: #e0f7ff; padding: 5px"><strong>Email</strong> </p>
-                    <p style="padding: 2px 2px 2px 15px;"> ${auth.user.email}</p>
-                    
-                    <p style="background-color: #e0f7ff; padding: 5px"><strong>Organization</strong> </p>
-                    <p style="padding: 2px 2px 2px 15px;"> ${auth.company}</p>
-                    
-                    ${surveyData.answers.map(qa => `
-                        <p style="background-color: #e0f7ff; padding: 5px"><strong>Question:</strong> ${qa.question}</p>
-                        <p style="padding: 2px 2px 2px 15px;">Answer: ${Array.isArray(qa.answer) ? qa.answer.join(', ') : qa.answer}</p>
-                    `).join('')}                    
-                </div>
-            `;
-
-            const emailResponse = await axiosInstance.post('/api/send-email', {
-                to: auth.user.email,
-                subject: `Survey Submission: ${survey.title}`,
-                text: surveyData.answers.map(qa => `Question: ${qa.question}\nAnswer: ${Array.isArray(qa.answer) ? qa.answer.join(', ') : qa.answer}`).join('\n\n'),
-                html: emailContent
-            });
-
-            console.log('Email sent:', emailResponse.data);
-
         } catch (error) {
             console.error('Error submitting survey:', error);
+            alert(error.response?.data?.message || 'Error submitting survey');
         }
     };
 
