@@ -76,7 +76,7 @@ const OrganizationDetails = () => {
       setEmailStatus((prev) => ({ ...prev, [user._id]: 'sent' })); // Update status to "sent"
     } catch (error) {
       console.error('Error sending reminder:', error);
-      setEmailStatus((prev) => ({ ...prev, [user._id]: 'error' })); // Update status to "error"
+      setEmailStatus((prev) => ({ ...prev, [user._id]: 'error sending email' })); // Update status to "error"
     }
   };
 
@@ -196,8 +196,6 @@ const OrganizationDetails = () => {
         ))}
       </select>
       <button onClick={changeLeader}>Change Leader</button>
-
-
     </div>
   );
 };

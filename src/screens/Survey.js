@@ -174,12 +174,6 @@ const SurveyPage = () => {
             formData.append('companyId', auth.user.organizationId._id);
             formData.append('userId', auth.user._id);
             formData.append('surveyId', id);
-            
-            // answers: Object.keys(answers).map(questionId => ({
-            //                     type: answers[questionId].type,
-            //                     answer: answers[questionId].answer
-            //                 })),
-
             formData.append('answers', JSON.stringify(Object.keys(answers).map(questionId => ({
                 type: answers[questionId].type,
                 answer: answers[questionId].answer
